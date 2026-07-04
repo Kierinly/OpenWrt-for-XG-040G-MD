@@ -23,6 +23,7 @@ on:
 
 env:
   CONFIG_FILE: "config/xg-040g-md.config"
+  DEVICE_PROFILE: "nokia_xg-040g-md"
   REPO_URL: https://github.com/xiangtailiang/openwrt.git
   REPO_BRANCH: main
   FEEDS_CONF: feeds.conf.default
@@ -135,6 +136,8 @@ jobs:
         run: |
           cp -fv "${CONFIG_FILE}" openwrt/.config
           cd openwrt
+          sed -i '/^CONFIG_TARGET_airoha_an7581_DEVICE_/d' .config
+          printf 'CONFIG_TARGET_airoha_an7581_DEVICE_%s=y\n' "$DEVICE_PROFILE" >> .config
           sed -i '/^CONFIG_LINUX_6_12=/d;/^CONFIG_LINUX_6_18=/d' .config
           printf 'CONFIG_LINUX_6_18=y\n' >> .config
           make defconfig
@@ -217,6 +220,7 @@ jobs:
           🚀 OpenWrt firmware for XG-040G-MD (openwrt-main)
           ----------------------
           设备型号: XG-040G-MD
+          构建目标: $DEVICE_PROFILE
           构建时间: $(date +"%Y-%m-%d %H:%M")
           内核版本: 6.18.X
           源码仓库: $REPO_URL
