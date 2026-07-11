@@ -137,6 +137,25 @@ if [ -d "openwrt-passwall-packages" ]; then
 	rm -rf openwrt-passwall-packages
 fi
 
+# Lucky (端口转发、动态域名、反向代理等)
+echo " "
+echo "=========================================="
+echo "Installing Lucky..."
+echo "=========================================="
+UPDATE_PACKAGE "luci-app-lucky" "sirpdboy/luci-app-lucky" "main"
+
+# Netdata 仪表盘 (显示温度和占用)
+echo " "
+echo "=========================================="
+echo "Installing Netdata dashboard..."
+echo "=========================================="
+if git clone --depth=1 https://github.com/gkerma/luci-app-netdata-dashboard.git package/luci-app-netdata-dashboard; then
+    echo "Netdata dashboard cloned successfully."
+else
+    echo "ERROR: Failed to clone Netdata dashboard."
+    exit 1
+fi
+
 echo " "
 echo "=========================================="
 echo "Package updates completed!"
